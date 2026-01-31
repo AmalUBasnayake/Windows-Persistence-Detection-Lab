@@ -1,7 +1,7 @@
 # 🛡️ Windows Persistence Detection & Sysmon Analysis
 
 ## 📌 Project Overview
-This project demonstrates how to detect **Adversary Persistence** techniques—specifically **Registry Run Key** modifications—using **Microsoft Sysmon**. This lab bridges the gap between offensive simulation and defensive detection, a core responsibility of a Cybersecurity Engineer.
+This project demonstrates how to detect **Adversary Persistence** techniques specifically **Registry Run Key** modifications using **Microsoft Sysmon**. This lab bridges the gap between offensive simulation and defensive detection, a core responsibility of a Cybersecurity Engineer.
 
 ---
 
@@ -20,6 +20,10 @@ In this phase, I simulated a common post-exploitation technique called **Persist
 1. **Registry Access:** Navigated to `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` using Registry Editor.
 2. **Payload Injection:** Created a new string value named `Updater`.
 3. **Execution Path:** Assigned a mock malicious payload path (`C:\Windows\System32\notepad.exe`) to the key.
+
+![Registry Simulation](2.png)
+*Figure 1: Injecting a mock malicious payload into the Registry Run keys.*
+
 4. **Monitoring:** Observed Sysmon's real-time detection capabilities via Event Viewer.
 
 ---
@@ -29,11 +33,17 @@ In this phase, I simulated a common post-exploitation technique called **Persist
 ### 🛡️ Sysmon Event ID 13: RegistryEvent (Value Set)
 The modification was successfully captured by Sysmon. Below are the key artifacts analyzed:
 
+![Sysmon Detection](3.png)
+*Figure 2: Sysmon capturing the Registry Value Set (Event ID 13).*
+
 * **Event ID:** 13 (Registry Value Set)
 * **Rule Match:** The event was flagged as **`Suspicious`** by the hardened Sysmon configuration.
 * **Process Image:** Identified `C:\WINDOWS\regedit.exe` as the source of the modification.
 * **TargetObject:** `HKCU\Software\Microsoft\Windows\CurrentVersion\Run\Updater`
 * **Details:** Captured the exact payload path added to the registry.
+
+![Log Details](4.png)
+*Figure 3: Deep dive into the log artifacts including Process ID and User details.*
 
 ---
 
